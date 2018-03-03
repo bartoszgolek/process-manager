@@ -140,4 +140,15 @@ class ProcessExecutor
 
         return $this;
     }
+
+    /**
+     * @param string $parameter
+     * @return $this
+     */
+    public function withParameter($parameter)
+    {
+        $this->params[] = $parameter;
+
+        return $this;
+    }
 }
