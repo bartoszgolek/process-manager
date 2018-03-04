@@ -53,6 +53,7 @@ class Process
             fclose($this->stdErr);
         }
 
+        proc_terminate ($this->process);
         return proc_close($this->process);
     }
 
