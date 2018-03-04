@@ -41,20 +41,25 @@ class Process
         }
     }
 
+    public function __destruct()
+    {
+        $this->close();
+    }
+
+
     /** @return int process exit code */
     public function close() {
-        if (is_resource($this->stdIn)) {
-            fclose($this->stdIn);
-        }
-        if (is_resource($this->stdOut)) {
-            fclose($this->stdOut);
-        }
-        if (is_resource($this->stdErr)) {
-            fclose($this->stdErr);
-        }
+        $this->closeStreams();
 
-        proc_terminate ($this->process);
+        if (is_resource($this->process)) {
+            proc_terminate($this->process);
+        }
         return proc_close($this->process);
+    }
+
+    public function detach() {
+        $this->closeStreams();
+        proc_close($this->process);
     }
 
     /**
@@ -100,6 +105,19 @@ class Process
     {
         if ($this->stdIn !== null) {
             fclose($this->stdIn);
+        }
+    }
+
+    public function closeStreams()
+    {
+        if (is_resource($this->stdIn)) {
+            fclose($this->stdIn);
+        }
+        if (is_resource($this->stdOut)) {
+            fclose($this->stdOut);
+        }
+        if (is_resource($this->stdErr)) {
+            fclose($this->stdErr);
         }
     }
 }
